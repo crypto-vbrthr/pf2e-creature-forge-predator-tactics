@@ -2,7 +2,7 @@
 
 Predator Tactics is an external ability library for **PF2E Creature Forge**. It adds predator-themed generated abilities without modifying Creature Forge core data.
 
-## 0.1.0-dev.2
+## 0.1.0-dev.6
 
 The current development build registers **25 abilities** focused on:
 
@@ -15,15 +15,15 @@ The current development build registers **25 abilities** focused on:
 
 The library uses Creature Forge's normal power budget, category/role selection, dependency validation, source selection, locking, and reroll workflows. It is registered through the stable Creature Forge ability-library API and appears in the Creature Forge **Ability libraries** source selector.
 
-### Reviewed in dev.2
+### Reviewed in dev.6
 
-The first Ambush & Hunt quality pass makes **Ambush Rush, Drag Down, Hamstring, Blood Scent, and Wounded Quarry** use explicit PF2e-style action, movement, multiple-attack-penalty, sense, and conditional-bonus language rather than broad narrative summaries.
+The Ambush & Hunt and Positioning & Pack Tactics passes remain in place. The new **Pursuit & Mobility** pass tightens Relentless Pursuit, Cornered Fury, Sudden Burst, Stalker's Patience, and Shadow the Quarry. Pursuit reactions now resolve after the triggering movement, Step-safe movement is explicitly respected, Avoid Notice is the precise prerequisite for the initiative bonus, and Sneak/Stride/Avoid Notice action links are exposed through Creature Forge's interactive ability controls.
 
 ## Requirements
 
 - Foundry VTT 14+
 - PF2e 8.4.0+
-- PF2E Creature Forge 1.0.1+
+- PF2E Creature Forge 1.1.0-dev.1+
 
 ## Design boundary
 

@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.1.0-dev.6
+
+- Reviewed the Pursuit & Mobility block: Relentless Pursuit, Cornered Fury, Sudden Burst, Stalker's Patience, and Shadow the Quarry.
+- Made pursuit timing explicit: movement resolves first, then the predator reacts.
+- Made Cornered Fury explicitly respect Step and other movement that suppresses movement-triggered reactions.
+- Replaced Stalker's Patience's ambiguous visibility condition with the PF2e Avoid Notice + Stealth initiative procedure.
+- Added a proper hidden/undetected requirement and legal cover/concealment destination to Shadow the Quarry.
+- Put Relentless Pursuit and Shadow the Quarry in the shared `predator-pursuit` family to avoid redundant reaction packages.
+- Added Stride, Avoid Notice, and Sneak interactive PF2e action links where useful.
+
+
+## 0.1.0-dev.5
+
+- Completed a rules-text clarity pass for previously ambiguous Predator Tactics abilities.
+- Clarified whether abilities are actions, reactions, passive benefits, or once-per-encounter free actions.
+- `Rake the Fallen` / `Am Boden zerfetzen` now explicitly targets any prone creature in melee reach during the predator's own turn and is not a trigger on falling prone or Standing.
+- Added concrete triggers and movement limits to Relentless Pursuit, Cornered Fury, Shadow the Quarry, and Savage Reversal.
+- Defined concrete effects for Latching Bite, Cull the Weak, Sudden Burst, Stalker's Patience, Finish the Hunt, Crushing Grip, and Apex Instinct.
+
+## 0.1.0-dev.4 - Positioning & Pack Tactics Review
+- Reworked Circling Predator into an explicit 10-foot Step with a conditional defensive reward for ending in a flank.
+- Defined Isolation Hunter with a concrete 10-foot isolation condition and relative off-guard benefit.
+- Reworked Pack Collapse into a two-action half-Speed reposition + melee Strike that can expose a successfully flanked target to the whole pack.
+- Added precise triggers and Step movement to Flank and Fade and Predator's Exchange.
+- Reworked Herd the Prey into degree-of-success forced movement with the existing GM-facing Reflex save request.
+- Reworked Bounding Reposition into a reaction-safe special Leap with explicit distances.
+- Added regression coverage for the reviewed block and removed the no-longer-used quickened-step dependency.
+
 ## 0.1.0-dev.3 - Interactive Ability Hooks
 - Requires Creature Forge 1.1.0-dev.1 interactive ability support.
 - Added native PF2e inline Trip handling for Drag Down.

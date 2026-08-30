@@ -119,3 +119,121 @@ test("interaction localization keys exist in German and English", () => {
     }
   }
 });
+
+test("Positioning & Pack Tactics review gives the reviewed block concrete geometry rules", () => {
+  const bySlug = new Map(PREDATOR_ABILITIES.map((ability) => [ability.slug, ability]));
+
+  const circling = bySlug.get("circling-predator");
+  assert.equal(circling.actionCost, 1);
+  assert.equal(circling.powerCost, 2);
+  assert.ok(circling.tags.includes("step"));
+  assert.ok(circling.tags.includes("flanking"));
+  assert.deepEqual(circling.applications, []);
+
+  const isolation = bySlug.get("isolation-hunter");
+  assert.equal(isolation.abilityType, "passive");
+  assert.equal(isolation.powerCost, 2);
+  assert.ok(isolation.tags.includes("off-guard"));
+  assert.deepEqual(isolation.applications, []);
+
+  const collapse = bySlug.get("pack-collapse");
+  assert.equal(collapse.family, "pack-hunter");
+  assert.equal(collapse.actionCost, 2);
+  assert.equal(collapse.powerCost, 3);
+  assert.deepEqual(collapse.applications, [{ type: "effect", ref: "pf2e-creature-forge.effect.off-guard", target: "target", timing: "on-hit" }]);
+
+  const fade = bySlug.get("flank-and-fade");
+  assert.equal(fade.abilityType, "reaction");
+  assert.ok(fade.tags.includes("step"));
+  assert.ok(fade.tags.includes("flanking"));
+
+  const herd = bySlug.get("herd-the-prey");
+  assert.ok(herd.tags.includes("forced-movement"));
+  assert.deepEqual(herd.applications, []);
+  assert.equal(herd.interactions[0].statistic, "reflex");
+  assert.equal(herd.interactions[0].mode, "chat");
+
+  const bounding = bySlug.get("bounding-reposition");
+  assert.equal(bounding.powerCost, 2);
+  assert.ok(bounding.tags.includes("leap"));
+  assert.ok(bounding.tags.includes("reaction-safe"));
+
+  const exchange = bySlug.get("predators-exchange");
+  assert.equal(exchange.abilityType, "reaction");
+  assert.ok(exchange.tags.includes("step"));
+  assert.ok(exchange.tags.includes("flanking"));
+});
+
+test("Positioning & Pack Tactics localization uses Step, flanking, and forced-movement terminology", () => {
+  const en = readJson("lang/en.json");
+  const de = readJson("lang/de.json");
+  assert.match(en["PF2E_CF_PREDATOR.Ability.CirclingPredator.Description"], /Steps up to 10 feet/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.IsolationHunter.Description"], /Isolated creatures are off-guard/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.PackCollapse.Description"], /flanking the target/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.FlankAndFade.Description"], /Trigger/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.HerdThePrey.Description"], /forced movement/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.BoundingReposition.Description"], /doesn't trigger reactions/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.CirclingPredator.Description"], /Schritt/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.IsolationHunter.Description"], /isoliert/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.PackCollapse.Description"], /flankieren/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.FlankAndFade.Description"], /Auslöser/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.HerdThePrey.Description"], /Erzwungene Bewegung/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.BoundingReposition.Description"], /keine Reaktionen/);
+});
+
+
+test("rules-text clarity pass makes previously ambiguous abilities operationally explicit", () => {
+  const en = readJson("lang/en.json");
+  const de = readJson("lang/de.json");
+
+  assert.match(en["PF2E_CF_PREDATOR.Ability.RakeTheFallen.Description"], /Any prone creature/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.RakeTheFallen.Description"], /not triggered/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.RakeTheFallen.Description"], /beliebige liegende Kreatur/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.RakeTheFallen.Description"], /weder durch das Hinfallen noch durch das Aufstehen/);
+
+  for (const key of ["RelentlessPursuit", "CorneredFury", "ShadowTheQuarry", "SavageReversal"]) {
+    assert.match(en[`PF2E_CF_PREDATOR.Ability.${key}.Description`], /Trigger/);
+    assert.match(de[`PF2E_CF_PREDATOR.Ability.${key}.Description`], /Auslöser/);
+  }
+
+  assert.match(en["PF2E_CF_PREDATOR.Ability.SuddenBurst.Description"], /Frequency once per encounter/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.SuddenBurst.Description"], /Häufigkeit Einmal pro Begegnung/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.FinishTheHunt.Description"], /at or below half its maximum Hit Points/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.FinishTheHunt.Description"], /höchstens der Hälfte ihrer maximalen Trefferpunkte/);
+});
+
+test("Pursuit & Mobility review gives pursuit abilities explicit timing and non-overlapping families", () => {
+  const bySlug = new Map(PREDATOR_ABILITIES.map((ability) => [ability.slug, ability]));
+  const pursuit = bySlug.get("relentless-pursuit");
+  const shadow = bySlug.get("shadow-the-quarry");
+  assert.equal(pursuit.family, "predator-pursuit");
+  assert.equal(shadow.family, "predator-pursuit");
+  assert.deepEqual(pursuit.interactions, [{ kind: "action", slug: "stride", mode: "inline" }]);
+  assert.deepEqual(shadow.interactions, [{ kind: "action", slug: "sneak", mode: "inline" }]);
+
+  const burst = bySlug.get("sudden-burst");
+  assert.equal(burst.abilityType, "free");
+  assert.deepEqual(burst.interactions, [{ kind: "action", slug: "stride", mode: "inline" }]);
+
+  const patience = bySlug.get("stalkers-patience");
+  assert.ok(patience.tags.includes("avoid-notice"));
+  assert.deepEqual(patience.interactions, [{ kind: "action", slug: "avoid-notice", mode: "inline" }]);
+});
+
+test("Pursuit & Mobility localization states triggers, Step safety, Avoid Notice, and Sneak requirements", () => {
+  const en = readJson("lang/en.json");
+  const de = readJson("lang/de.json");
+
+  assert.match(en["PF2E_CF_PREDATOR.Ability.RelentlessPursuit.Description"], /After the triggering movement is fully resolved/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.RelentlessPursuit.Description"], /Nachdem die auslösende Bewegung vollständig abgehandelt wurde/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.CorneredFury.Description"], /can't be triggered by Step/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.CorneredFury.Description"], /nicht durch Schritt/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.SuddenBurst.Description"], /not in the middle of resolving another action or activity/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.SuddenBurst.Description"], /nicht mitten während der Abhandlung/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.StalkersPatience.Description"], /Avoid Notice/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.StalkersPatience.Description"], /Unbemerkt nähern/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /hidden or undetected/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /cover or concealment/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /verborgen oder unentdeckt/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /Deckung oder Tarnung/);
+});

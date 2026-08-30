@@ -1,5 +1,5 @@
 export const MODULE_ID = "pf2e-creature-forge-predator-tactics";
-export const MODULE_VERSION = "0.1.0-dev.3";
+export const MODULE_VERSION = "0.1.0-dev.6";
 export const LIBRARY_ID = `${MODULE_ID}.predator-tactics`;
 
 const CORE_EFFECT = Object.freeze({
@@ -7,7 +7,6 @@ const CORE_EFFECT = Object.freeze({
   hampered10: "pf2e-creature-forge.effect.hampered-10",
   offGuard: "pf2e-creature-forge.effect.off-guard",
   enfeebled1: "pf2e-creature-forge.effect.enfeebled-1",
-  quickenedStep: "pf2e-creature-forge.effect.quickened-step"
 });
 
 const ability = (slug, key, extra = {}) => ({
@@ -69,69 +68,77 @@ export const PREDATOR_ABILITIES = Object.freeze([
     synergy: { prefers: ["quarry-awareness", "strike"] }
   }),
   ability("circling-predator", "CirclingPredator", {
-    actionCost: 1, category: "defensive", powerCost: 2, baseWeight: 80,
-    tags: ["movement", "positioning", "self-buff"],
+    actionCost: 1, category: "defensive", powerCost: 2, baseWeight: 84,
+    tags: ["movement", "positioning", "step", "flanking"],
     selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "skillParagon", "custom"] },
-    applications: [{ type: "effect", ref: CORE_EFFECT.quickenedStep, target: "self", timing: "after-use" }]
+    synergy: { provides: ["positioning"], prefers: ["teamwork", "flanking"] }
   }),
   ability("isolation-hunter", "IsolationHunter", {
-    abilityType: "passive", powerCost: 1, baseWeight: 70,
-    tags: ["isolation", "focus-fire", "tactical"],
-    selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES }
+    abilityType: "passive", powerCost: 2, baseWeight: 74,
+    tags: ["isolation", "focus-fire", "tactical", "off-guard"],
+    selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES },
+    synergy: { provides: ["isolation-pressure"], prefers: ["focus-fire", "pursuit"] }
   }),
   ability("pack-collapse", "PackCollapse", {
-    actionCost: 2, powerCost: 2, family: "pack-hunter", baseWeight: 76,
-    tags: ["pack", "teamwork", "control"],
-    selection: { categories: ["animal", "beast", "humanoid", "fey", "fiend"] },
-    applications: [{ type: "effect", ref: CORE_EFFECT.offGuard, target: "target", timing: "on-success" }],
-    synergy: { provides: ["teamwork"], prefers: ["pack", "focus-fire"] }
+    actionCost: 2, powerCost: 3, family: "pack-hunter", baseWeight: 82,
+    tags: ["pack", "teamwork", "movement", "strike", "flanking", "off-guard"],
+    selection: { categories: ["animal", "beast", "humanoid", "fey", "fiend"], roles: ["skirmisher", "brute", "soldier", "skillParagon", "custom"] },
+    applications: [{ type: "effect", ref: CORE_EFFECT.offGuard, target: "target", timing: "on-hit" }],
+    synergy: { provides: ["teamwork", "isolation-pressure"], prefers: ["pack", "focus-fire", "positioning"] }
   }),
   ability("flank-and-fade", "FlankAndFade", {
-    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 82,
-    tags: ["reaction", "movement", "teamwork"],
-    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "skillParagon", "custom"] }
+    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 86,
+    tags: ["reaction", "movement", "step", "teamwork", "flanking"],
+    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "skillParagon", "custom"] },
+    synergy: { provides: ["positioning"], prefers: ["teamwork", "flanking"] }
   }),
   ability("relentless-pursuit", "RelentlessPursuit", {
-    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 92,
-    tags: ["reaction", "movement", "pursuit"],
+    abilityType: "reaction", category: "defensive", powerCost: 2, family: "predator-pursuit", baseWeight: 92,
+    tags: ["reaction", "movement", "pursuit", "stride"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["skirmisher", "brute", "soldier", "custom"] },
+    interactions: [{ kind: "action", slug: "stride", mode: "inline" }],
     synergy: { provides: ["pursuit"], prefers: ["quarry-awareness"] }
   }),
   ability("cornered-fury", "CorneredFury", {
     abilityType: "reaction", powerCost: 2, baseWeight: 70,
-    tags: ["reaction", "strike", "pursuit"],
+    tags: ["reaction", "strike", "pursuit", "melee"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"] }
   }),
   ability("latching-bite", "LatchingBite", {
     actionCost: 2, powerCost: 2, baseWeight: 88,
-    tags: ["strike", "grapple", "control"],
+    tags: ["strike", "grapple", "control", "athletics"],
     selection: { categories: ["animal", "beast", "dragon", "fiend", "aberration"], roles: ["brute", "soldier", "skirmisher", "custom"] },
     interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.LatchingBite.Check" }]
   }),
   ability("rake-the-fallen", "RakeTheFallen", {
     actionCost: 1, powerCost: 1, baseWeight: 68,
-    tags: ["strike", "prone", "finisher"],
+    tags: ["strike", "prone", "finisher", "bonus-damage"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "skirmisher", "soldier", "custom"] }
   }),
   ability("cull-the-weak", "CullTheWeak", {
     abilityType: "passive", powerCost: 1, baseWeight: 74,
-    tags: ["debuff", "finisher", "focus-fire"],
+    tags: ["debuff", "finisher", "focus-fire", "bonus-damage"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES }
   }),
   ability("sudden-burst", "SuddenBurst", {
     abilityType: "free", category: "defensive", powerCost: 1, baseWeight: 62,
-    tags: ["movement", "burst", "once-per-encounter"],
-    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "brute", "custom"], minimumLevel: 2 }
+    tags: ["movement", "burst", "once-per-encounter", "stride"],
+    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "brute", "custom"], minimumLevel: 2 },
+    interactions: [{ kind: "action", slug: "stride", mode: "inline" }]
   }),
   ability("stalkers-patience", "StalkersPatience", {
     abilityType: "passive", category: "defensive", powerCost: 1, baseWeight: 68,
-    tags: ["stealth", "ambush", "patience"],
-    selection: { categories: ["animal", "beast", "aberration", "fey", "fiend", "humanoid"], roles: ["sniper", "skirmisher", "skillParagon", "custom"] }
+    tags: ["stealth", "ambush", "patience", "initiative", "avoid-notice"],
+    selection: { categories: ["animal", "beast", "aberration", "fey", "fiend", "humanoid"], roles: ["sniper", "skirmisher", "skillParagon", "custom"] },
+    interactions: [{ kind: "action", slug: "avoid-notice", mode: "inline" }],
+    synergy: { provides: ["ambush"], prefers: ["stealth"] }
   }),
   ability("shadow-the-quarry", "ShadowTheQuarry", {
-    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 78,
-    tags: ["reaction", "movement", "stealth", "pursuit"],
-    selection: { categories: ["animal", "beast", "aberration", "fey", "fiend", "humanoid"], roles: ["sniper", "skirmisher", "skillParagon", "custom"] }
+    abilityType: "reaction", category: "defensive", powerCost: 2, family: "predator-pursuit", baseWeight: 78,
+    tags: ["reaction", "movement", "stealth", "pursuit", "sneak"],
+    selection: { categories: ["animal", "beast", "aberration", "fey", "fiend", "humanoid"], roles: ["sniper", "skirmisher", "skillParagon", "custom"] },
+    interactions: [{ kind: "action", slug: "sneak", mode: "inline" }],
+    synergy: { provides: ["pursuit"], prefers: ["ambush", "stealth", "quarry-awareness"] }
   }),
   ability("territorial-challenge", "TerritorialChallenge", {
     actionCost: 1, powerCost: 2, family: "fear-display", baseWeight: 58,
@@ -142,22 +149,24 @@ export const PREDATOR_ABILITIES = Object.freeze([
     interactions: [{ kind: "check", statistic: "will", dcRank: "high", showDC: "gm", mode: "chat", labelKey: "PF2E_CF_PREDATOR.Interaction.WillSave.Label", requestLabelKey: "PF2E_CF_PREDATOR.Interaction.WillSave.Request" }]
   }),
   ability("herd-the-prey", "HerdThePrey", {
-    actionCost: 2, powerCost: 3, baseWeight: 72,
-    tags: ["movement", "control", "area", "positioning"],
+    actionCost: 2, powerCost: 3, baseWeight: 78,
+    tags: ["movement", "forced-movement", "control", "area", "positioning"],
     mechanics: { area: { shape: "cone", distanceFeet: 15 } },
     selection: { categories: ["animal", "beast", "dragon", "giant", "fiend"], roles: ["brute", "soldier", "skirmisher", "custom"], minimumLevel: 3 },
-    applications: [{ type: "effect", ref: CORE_EFFECT.hampered10, target: "failed-save-targets", timing: "failed-save" }],
-    interactions: [{ kind: "check", statistic: "reflex", dcRank: "high", showDC: "gm", mode: "chat", labelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Label", requestLabelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Request" }]
+    interactions: [{ kind: "check", statistic: "reflex", dcRank: "high", showDC: "gm", mode: "chat", labelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Label", requestLabelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Request" }],
+    synergy: { provides: ["positioning"], prefers: ["teamwork", "control", "pursuit"] }
   }),
   ability("bounding-reposition", "BoundingReposition", {
-    actionCost: 1, category: "defensive", powerCost: 1, baseWeight: 75,
-    tags: ["movement", "positioning", "leap"],
-    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "skillParagon", "custom"] }
+    actionCost: 1, category: "defensive", powerCost: 2, baseWeight: 78,
+    tags: ["movement", "positioning", "leap", "reaction-safe"],
+    selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "sniper", "skillParagon", "custom"] },
+    synergy: { provides: ["positioning"], prefers: ["ambush", "pursuit"] }
   }),
   ability("predators-exchange", "PredatorsExchange", {
-    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 62,
-    tags: ["reaction", "teamwork", "movement", "pack"],
-    selection: { categories: ["animal", "beast", "humanoid", "fey", "fiend"], roles: ["skirmisher", "soldier", "skillParagon", "custom"] }
+    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 72,
+    tags: ["reaction", "teamwork", "movement", "step", "pack", "flanking"],
+    selection: { categories: ["animal", "beast", "humanoid", "fey", "fiend"], roles: ["skirmisher", "soldier", "skillParagon", "custom"] },
+    synergy: { provides: ["positioning", "teamwork"], prefers: ["pack", "flanking"] }
   }),
   ability("crushing-grip", "CrushingGrip", {
     actionCost: 2, powerCost: 2, baseWeight: 70,
@@ -168,13 +177,13 @@ export const PREDATOR_ABILITIES = Object.freeze([
   }),
   ability("finish-the-hunt", "FinishTheHunt", {
     actionCost: 2, powerCost: 2, baseWeight: 78,
-    tags: ["strike", "finisher", "wounded-prey"],
+    tags: ["strike", "finisher", "wounded-prey", "bonus-damage"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES, minimumLevel: 2 },
     synergy: { prefers: ["wounded-prey", "quarry-awareness"] }
   }),
   ability("savage-reversal", "SavageReversal", {
     abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 64,
-    tags: ["reaction", "movement", "counter"],
+    tags: ["reaction", "movement", "counter", "step", "strike"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"], minimumLevel: 3 }
   }),
   ability("apex-instinct", "ApexInstinct", {
