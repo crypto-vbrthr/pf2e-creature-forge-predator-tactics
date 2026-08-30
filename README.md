@@ -2,7 +2,7 @@
 
 Predator Tactics is an external ability library for **PF2E Creature Forge**. It adds predator-themed generated abilities without modifying Creature Forge core data.
 
-## 0.1.0-dev.6
+## 0.1.0-dev.7
 
 The current development build registers **25 abilities** focused on:
 
@@ -15,9 +15,9 @@ The current development build registers **25 abilities** focused on:
 
 The library uses Creature Forge's normal power budget, category/role selection, dependency validation, source selection, locking, and reroll workflows. It is registered through the stable Creature Forge ability-library API and appears in the Creature Forge **Ability libraries** source selector.
 
-### Reviewed in dev.6
+### Reviewed in dev.7
 
-The Ambush & Hunt and Positioning & Pack Tactics passes remain in place. The new **Pursuit & Mobility** pass tightens Relentless Pursuit, Cornered Fury, Sudden Burst, Stalker's Patience, and Shadow the Quarry. Pursuit reactions now resolve after the triggering movement, Step-safe movement is explicitly respected, Avoid Notice is the precise prerequisite for the initiative bonus, and Sneak/Stride/Avoid Notice action links are exposed through Creature Forge's interactive ability controls.
+The Ambush & Hunt, Positioning & Pack Tactics, and Pursuit & Mobility passes remain in place. The new **Finishers & Brutality** pass tightens the grapple chain, limits burst finishers to once per round, prevents redundant finisher/initiative packages through shared families, and gives Apex Instinct a distinct first-round payoff. Latching Bite and Crushing Grip continue to expose their Athletics-vs-Fortitude checks through Creature Forge's interactive ability controls.
 
 ## Requirements
 

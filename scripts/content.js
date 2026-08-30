@@ -1,5 +1,5 @@
 export const MODULE_ID = "pf2e-creature-forge-predator-tactics";
-export const MODULE_VERSION = "0.1.0-dev.6";
+export const MODULE_VERSION = "0.1.0-dev.7";
 export const LIBRARY_ID = `${MODULE_ID}.predator-tactics`;
 
 const CORE_EFFECT = Object.freeze({
@@ -105,18 +105,19 @@ export const PREDATOR_ABILITIES = Object.freeze([
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"] }
   }),
   ability("latching-bite", "LatchingBite", {
-    actionCost: 2, powerCost: 2, baseWeight: 88,
+    actionCost: 2, powerCost: 2, family: "predator-grapple-opener", baseWeight: 88,
     tags: ["strike", "grapple", "control", "athletics"],
     selection: { categories: ["animal", "beast", "dragon", "fiend", "aberration"], roles: ["brute", "soldier", "skirmisher", "custom"] },
-    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.LatchingBite.Check" }]
+    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.LatchingBite.Check" }],
+    synergy: { provides: ["grapple-control"], prefers: ["strike", "control"] }
   }),
   ability("rake-the-fallen", "RakeTheFallen", {
-    actionCost: 1, powerCost: 1, baseWeight: 68,
+    actionCost: 1, powerCost: 2, family: "predator-finisher", baseWeight: 68,
     tags: ["strike", "prone", "finisher", "bonus-damage"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "skirmisher", "soldier", "custom"] }
   }),
   ability("cull-the-weak", "CullTheWeak", {
-    abilityType: "passive", powerCost: 1, baseWeight: 74,
+    abilityType: "passive", powerCost: 2, family: "predator-finisher", baseWeight: 74,
     tags: ["debuff", "finisher", "focus-fire", "bonus-damage"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES }
   }),
@@ -127,7 +128,7 @@ export const PREDATOR_ABILITIES = Object.freeze([
     interactions: [{ kind: "action", slug: "stride", mode: "inline" }]
   }),
   ability("stalkers-patience", "StalkersPatience", {
-    abilityType: "passive", category: "defensive", powerCost: 1, baseWeight: 68,
+    abilityType: "passive", category: "defensive", powerCost: 1, family: "predator-initiative", baseWeight: 68,
     tags: ["stealth", "ambush", "patience", "initiative", "avoid-notice"],
     selection: { categories: ["animal", "beast", "aberration", "fey", "fiend", "humanoid"], roles: ["sniper", "skirmisher", "skillParagon", "custom"] },
     interactions: [{ kind: "action", slug: "avoid-notice", mode: "inline" }],
@@ -169,25 +170,26 @@ export const PREDATOR_ABILITIES = Object.freeze([
     synergy: { provides: ["positioning", "teamwork"], prefers: ["pack", "flanking"] }
   }),
   ability("crushing-grip", "CrushingGrip", {
-    actionCost: 2, powerCost: 2, baseWeight: 70,
+    actionCost: 1, powerCost: 2, baseWeight: 70,
     tags: ["grapple", "control", "debuff"],
     selection: { categories: ["animal", "beast", "dragon", "giant", "fiend", "aberration"], roles: ["brute", "soldier", "custom"], minimumLevel: 2 },
     applications: [{ type: "effect", ref: CORE_EFFECT.enfeebled1, target: "target", timing: "on-success" }],
-    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.CrushingGrip.Check" }]
+    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.CrushingGrip.Check" }],
+    synergy: { prefers: ["grapple-control"], provides: ["debilitated-prey"] }
   }),
   ability("finish-the-hunt", "FinishTheHunt", {
-    actionCost: 2, powerCost: 2, baseWeight: 78,
+    actionCost: 1, powerCost: 2, family: "predator-finisher", baseWeight: 78,
     tags: ["strike", "finisher", "wounded-prey", "bonus-damage"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES, minimumLevel: 2 },
     synergy: { prefers: ["wounded-prey", "quarry-awareness"] }
   }),
   ability("savage-reversal", "SavageReversal", {
-    abilityType: "reaction", category: "defensive", powerCost: 2, baseWeight: 64,
+    abilityType: "reaction", category: "defensive", powerCost: 2, family: "predator-counter", baseWeight: 64,
     tags: ["reaction", "movement", "counter", "step", "strike"],
     selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"], minimumLevel: 3 }
   }),
   ability("apex-instinct", "ApexInstinct", {
-    abilityType: "passive", powerCost: 1, baseWeight: 54,
+    abilityType: "passive", powerCost: 2, family: "predator-initiative", baseWeight: 54,
     tags: ["initiative", "senses", "apex", "quarry-awareness"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES, minimumLevel: 4 },
     synergy: { provides: ["quarry-awareness"], prefers: ["ambush", "pursuit"] }

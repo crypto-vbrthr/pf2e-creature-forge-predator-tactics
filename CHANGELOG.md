@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.0-dev.7 - Finishers & Brutality Review
+
+- Reviewed Latching Bite, Rake the Fallen, Cull the Weak, Crushing Grip, Finish the Hunt, Savage Reversal, and Apex Instinct.
+- Added explicit multiple-attack-penalty timing and critical-success restraint to Latching Bite.
+- Limited Rake the Fallen and Finish the Hunt to once per round and placed all three finisher-style damage abilities in the shared `predator-finisher` family to prevent redundant damage packages.
+- Reworded Cull the Weak as a PF2e circumstance bonus to damage rolls rather than ambiguous "circumstance damage".
+- Reduced Crushing Grip to 1 action, added a critical-failure release risk, and linked it by synergy to grapple-opening abilities.
+- Clarified Savage Reversal's special 10-foot Step and its normal Step reaction protection.
+- Expanded Apex Instinct into a distinct opening-round predator benefit and put it in the same `predator-initiative` family as Stalker's Patience to prevent redundant initiative bonuses.
+
 ## 0.1.0-dev.6
 
 - Reviewed the Pursuit & Mobility block: Relentless Pursuit, Cornered Fury, Sudden Burst, Stalker's Patience, and Shadow the Quarry.

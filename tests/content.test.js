@@ -237,3 +237,53 @@ test("Pursuit & Mobility localization states triggers, Step safety, Avoid Notice
   assert.match(de["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /verborgen oder unentdeckt/);
   assert.match(de["PF2E_CF_PREDATOR.Ability.ShadowTheQuarry.Description"], /Deckung oder Tarnung/);
 });
+
+
+test("Finishers & Brutality review limits overlap and tightens high-impact action economy", () => {
+  const bySlug = new Map(PREDATOR_ABILITIES.map((ability) => [ability.slug, ability]));
+
+  const latch = bySlug.get("latching-bite");
+  assert.equal(latch.actionCost, 2);
+  assert.equal(latch.family, "predator-grapple-opener");
+  assert.ok(latch.synergy.provides.includes("grapple-control"));
+
+  for (const slug of ["rake-the-fallen", "cull-the-weak", "finish-the-hunt"]) {
+    assert.equal(bySlug.get(slug).family, "predator-finisher", slug);
+    assert.equal(bySlug.get(slug).powerCost, 2, slug);
+  }
+  assert.equal(bySlug.get("rake-the-fallen").actionCost, 1);
+  assert.equal(bySlug.get("finish-the-hunt").actionCost, 1);
+
+  const grip = bySlug.get("crushing-grip");
+  assert.equal(grip.actionCost, 1);
+  assert.ok(grip.synergy.prefers.includes("grapple-control"));
+
+  assert.equal(bySlug.get("savage-reversal").family, "predator-counter");
+  assert.equal(bySlug.get("apex-instinct").family, "predator-initiative");
+  assert.equal(bySlug.get("stalkers-patience").family, "predator-initiative");
+  assert.equal(bySlug.get("apex-instinct").powerCost, 2);
+});
+
+test("Finishers & Brutality localization states frequency, MAP, release risk, and opening-round payoff", () => {
+  const en = readJson("lang/en.json");
+  const de = readJson("lang/de.json");
+
+  assert.match(en["PF2E_CF_PREDATOR.Ability.LatchingBite.Description"], /multiple attack penalty/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.LatchingBite.Description"], /critical success/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.LatchingBite.Description"], /Malus für Mehrfachangriffe/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.LatchingBite.Description"], /Kritischen Erfolg/);
+
+  for (const key of ["RakeTheFallen", "FinishTheHunt"]) {
+    assert.match(en[`PF2E_CF_PREDATOR.Ability.${key}.Description`], /Frequency once per round/);
+    assert.match(de[`PF2E_CF_PREDATOR.Ability.${key}.Description`], /Häufigkeit Einmal pro Runde/);
+  }
+
+  assert.match(en["PF2E_CF_PREDATOR.Ability.CullTheWeak.Description"], /circumstance bonus to damage rolls/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.CullTheWeak.Description"], /Situationsbonus von \+2 auf Schadenswürfe/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.CrushingGrip.Description"], /critical failure/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.CrushingGrip.Description"], /Kritischen Fehlschlag/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.SavageReversal.Description"], /doesn't trigger reactions/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.SavageReversal.Description"], /keine durch Bewegung ausgelösten Reaktionen/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.ApexInstinct.Description"], /off-guard/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.ApexInstinct.Description"], /Auf dem Falschen Fuß/);
+});
