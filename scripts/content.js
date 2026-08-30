@@ -1,5 +1,5 @@
 export const MODULE_ID = "pf2e-creature-forge-predator-tactics";
-export const MODULE_VERSION = "0.1.0-rc.1";
+export const MODULE_VERSION = "0.1.0";
 export const LIBRARY_ID = `${MODULE_ID}.predator-tactics`;
 
 const CORE_EFFECT = Object.freeze({

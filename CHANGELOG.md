@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0 - Stable Release
+
+- Promoted the Foundry-tested 0.1.0-rc.1 build to the first stable Predator Tactics release.
+- Includes all 25 reviewed predator abilities, interactive Creature Forge ability controls, density balancing, overlap families, and DE/EN localization.
+- No functional ability changes from 0.1.0-rc.1.
+- Keeps the tested Creature Forge dependency floor at 1.1.0-dev.1 for Interactive Ability Actions support.
+
 ## 0.1.0-rc.1 - Final Density, Overlap & Selection Review
 
 - Completed the full 25-ability density, overlap, role/category, and selection-frequency review.

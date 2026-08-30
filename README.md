@@ -2,9 +2,9 @@
 
 Predator Tactics is an external ability library for **PF2E Creature Forge**. It adds predator-themed generated abilities without modifying Creature Forge core data.
 
-## 0.1.0-rc.1
+## 0.1.0
 
-The current development build registers **25 abilities** focused on:
+The first stable release registers **25 abilities** focused on:
 
 - ambush and opening attacks;
 - pursuit and reaction movement;
@@ -15,11 +15,11 @@ The current development build registers **25 abilities** focused on:
 
 The library uses Creature Forge's normal power budget, category/role selection, dependency validation, source selection, locking, and reroll workflows. It is registered through the stable Creature Forge ability-library API and appears in the Creature Forge **Ability libraries** source selector.
 
-### Release-candidate review
+### Stable release
 
 All 25 abilities have completed their individual rules-text and mechanics passes. The final density/overlap review adds soft anti-clustering hints to the library: when Predator Tactics is mixed with the Creature Forge core library, additional Predator picks become progressively less attractive without being forbidden. This keeps the add-on visible without letting a large 25-ability pool drown out core abilities. Passive and reaction entries receive an additional soft diversity penalty after the first pick of the same type.
 
-The RC also clarifies Ambush Rush as up to two subordinate Strides followed by a melee Strike, makes Territorial Challenge explicitly auditory, and rewrites Predator's Exchange without the ambiguous term “threaten.” Interactive Athletics, saves, PF2e actions, and Send Ability to Chat controls remain available.
+The final release also clarifies Ambush Rush as up to two subordinate Strides followed by a melee Strike, makes Territorial Challenge explicitly auditory, and rewrites Predator's Exchange without the ambiguous term “threaten.” Interactive Athletics, saves, PF2e actions, and Send Ability to Chat controls remain available.
 
 ## Requirements
 
