@@ -1,0 +1,27 @@
+{
+  "id": "pf2e-creature-forge-predator-tactics",
+  "title": "PF2E Creature Forge: Predator Tactics",
+  "description": "Expands PF2E Creature Forge with predator-themed movement, pursuit, pack-hunting, ambush, and finishing abilities for more varied generated creatures.",
+  "version": "0.1.0-dev.1",
+  "authors": [{ "name": "crypto-vbrthr" }],
+  "compatibility": { "minimum": "14", "verified": "14" },
+  "relationships": {
+    "systems": [{
+      "id": "pf2e",
+      "type": "system",
+      "compatibility": { "minimum": "8.4.0" }
+    }],
+    "requires": [{
+      "id": "pf2e-creature-forge",
+      "type": "module",
+      "compatibility": { "minimum": "1.0.1" }
+    }]
+  },
+  "esmodules": ["scripts/main.js"],
+  "languages": [
+    { "lang": "de", "name": "Deutsch", "path": "lang/de.json" },
+    { "lang": "en", "name": "English", "path": "lang/en.json" }
+  ],
+  "license": "LICENSE",
+  "readme": "README.md"
+}
