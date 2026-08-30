@@ -15,3 +15,8 @@ The first build intentionally concentrates on Animal, Beast, Dragon, Aberration,
 ## Automation boundary
 
 Existing Creature Forge effects are reused for off-guard, frightened 1, hampered movement, enfeebled 1, and the short movement boost. Complex positional triggers remain descriptive because target geometry, Grabbed state, ally placement, and exact movement choices are encounter-state decisions.
+
+
+## Ability quality pass: Ambush & Hunt
+
+The first five entries now use explicit PF2e-facing mechanics. Ambush Rush is intentionally in the `pounce` family but is stronger and conditional: it requires hidden/undetected positioning and compresses two Strides plus a melee Strike into two actions. Drag Down follows the normal subordinate-action/MAP pattern for a Strike followed by Trip. Hamstring reuses Creature Forge's one-round movement penalty effect. Blood Scent is a limited imprecise sense rather than a generic narrative tracking bonus. Wounded Quarry uses a scale-independent +1 circumstance attack bonus only against prey at or below half Hit Points.

@@ -1,5 +1,5 @@
 export const MODULE_ID = "pf2e-creature-forge-predator-tactics";
-export const MODULE_VERSION = "0.1.0-dev.1";
+export const MODULE_VERSION = "0.1.0-dev.3";
 export const LIBRARY_ID = `${MODULE_ID}.predator-tactics`;
 
 const CORE_EFFECT = Object.freeze({
@@ -28,6 +28,8 @@ const ability = (slug, key, extra = {}) => ({
   synergy: extra.synergy ?? {},
   applications: extra.applications ?? [],
   mechanics: extra.mechanics ?? null,
+  interactions: extra.interactions ?? [],
+  shareToChat: extra.shareToChat !== false,
   img: extra.img ?? "systems/pf2e/icons/actions/OneAction.webp"
 });
 
@@ -37,15 +39,16 @@ const HUNTER_ROLES = ["skirmisher", "brute", "soldier", "sniper", "skillParagon"
 
 export const PREDATOR_ABILITIES = Object.freeze([
   ability("ambush-rush", "AmbushRush", {
-    actionCost: 2, powerCost: 2, family: "pounce", baseWeight: 95,
-    tags: ["ambush", "movement", "strike"],
+    actionCost: 2, powerCost: 3, family: "pounce", baseWeight: 90,
+    tags: ["ambush", "movement", "strike", "off-guard"],
     selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "brute", "sniper", "custom"] },
     synergy: { provides: ["close-distance"], prefers: ["ambush", "strike"] }
   }),
   ability("drag-down", "DragDown", {
-    actionCost: 2, powerCost: 2, baseWeight: 80,
-    tags: ["control", "strike", "grapple"],
-    selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"] }
+    actionCost: 2, powerCost: 2, baseWeight: 82,
+    tags: ["control", "strike", "trip", "athletics"],
+    selection: { categories: PHYSICAL_PREDATORS, roles: ["brute", "soldier", "skirmisher", "custom"] },
+    interactions: [{ kind: "action", slug: "trip", mode: "inline" }]
   }),
   ability("hamstring", "Hamstring", {
     actionCost: 1, powerCost: 2, baseWeight: 85,
@@ -60,8 +63,8 @@ export const PREDATOR_ABILITIES = Object.freeze([
     synergy: { provides: ["quarry-awareness"], prefers: ["wounded-prey"] }
   }),
   ability("wounded-quarry", "WoundedQuarry", {
-    abilityType: "passive", powerCost: 1, baseWeight: 72,
-    tags: ["wounded-prey", "focus-fire"],
+    abilityType: "passive", powerCost: 2, baseWeight: 70,
+    tags: ["wounded-prey", "focus-fire", "attack-bonus"],
     selection: { categories: PREDATOR_CATEGORIES, roles: HUNTER_ROLES },
     synergy: { prefers: ["quarry-awareness", "strike"] }
   }),
@@ -102,7 +105,8 @@ export const PREDATOR_ABILITIES = Object.freeze([
   ability("latching-bite", "LatchingBite", {
     actionCost: 2, powerCost: 2, baseWeight: 88,
     tags: ["strike", "grapple", "control"],
-    selection: { categories: ["animal", "beast", "dragon", "fiend", "aberration"], roles: ["brute", "soldier", "skirmisher", "custom"] }
+    selection: { categories: ["animal", "beast", "dragon", "fiend", "aberration"], roles: ["brute", "soldier", "skirmisher", "custom"] },
+    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.LatchingBite.Check" }]
   }),
   ability("rake-the-fallen", "RakeTheFallen", {
     actionCost: 1, powerCost: 1, baseWeight: 68,
@@ -134,14 +138,16 @@ export const PREDATOR_ABILITIES = Object.freeze([
     traits: ["auditory", "emotion", "fear", "mental"],
     tags: ["fear", "territorial", "control"],
     selection: { categories: ["animal", "beast", "dragon", "giant", "fiend"], roles: ["brute", "soldier", "custom"], minimumLevel: 2 },
-    applications: [{ type: "effect", ref: CORE_EFFECT.frightened1, target: "target", timing: "failed-save" }]
+    applications: [{ type: "effect", ref: CORE_EFFECT.frightened1, target: "target", timing: "failed-save" }],
+    interactions: [{ kind: "check", statistic: "will", dcRank: "high", showDC: "gm", mode: "chat", labelKey: "PF2E_CF_PREDATOR.Interaction.WillSave.Label", requestLabelKey: "PF2E_CF_PREDATOR.Interaction.WillSave.Request" }]
   }),
   ability("herd-the-prey", "HerdThePrey", {
     actionCost: 2, powerCost: 3, baseWeight: 72,
     tags: ["movement", "control", "area", "positioning"],
     mechanics: { area: { shape: "cone", distanceFeet: 15 } },
     selection: { categories: ["animal", "beast", "dragon", "giant", "fiend"], roles: ["brute", "soldier", "skirmisher", "custom"], minimumLevel: 3 },
-    applications: [{ type: "effect", ref: CORE_EFFECT.hampered10, target: "failed-save-targets", timing: "failed-save" }]
+    applications: [{ type: "effect", ref: CORE_EFFECT.hampered10, target: "failed-save-targets", timing: "failed-save" }],
+    interactions: [{ kind: "check", statistic: "reflex", dcRank: "high", showDC: "gm", mode: "chat", labelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Label", requestLabelKey: "PF2E_CF_PREDATOR.Interaction.ReflexSave.Request" }]
   }),
   ability("bounding-reposition", "BoundingReposition", {
     actionCost: 1, category: "defensive", powerCost: 1, baseWeight: 75,
@@ -157,7 +163,8 @@ export const PREDATOR_ABILITIES = Object.freeze([
     actionCost: 2, powerCost: 2, baseWeight: 70,
     tags: ["grapple", "control", "debuff"],
     selection: { categories: ["animal", "beast", "dragon", "giant", "fiend", "aberration"], roles: ["brute", "soldier", "custom"], minimumLevel: 2 },
-    applications: [{ type: "effect", ref: CORE_EFFECT.enfeebled1, target: "target", timing: "on-success" }]
+    applications: [{ type: "effect", ref: CORE_EFFECT.enfeebled1, target: "target", timing: "on-success" }],
+    interactions: [{ kind: "check", statistic: "athletics", defense: "fortitude", mode: "inline", labelKey: "PF2E_CF_PREDATOR.Interaction.CrushingGrip.Check" }]
   }),
   ability("finish-the-hunt", "FinishTheHunt", {
     actionCost: 2, powerCost: 2, baseWeight: 78,
