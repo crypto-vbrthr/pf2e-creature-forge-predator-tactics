@@ -2,7 +2,7 @@
 
 Predator Tactics is an external ability library for **PF2E Creature Forge**. It adds predator-themed generated abilities without modifying Creature Forge core data.
 
-## 0.1.0-dev.7
+## 0.1.0-rc.1
 
 The current development build registers **25 abilities** focused on:
 
@@ -15,9 +15,11 @@ The current development build registers **25 abilities** focused on:
 
 The library uses Creature Forge's normal power budget, category/role selection, dependency validation, source selection, locking, and reroll workflows. It is registered through the stable Creature Forge ability-library API and appears in the Creature Forge **Ability libraries** source selector.
 
-### Reviewed in dev.7
+### Release-candidate review
 
-The Ambush & Hunt, Positioning & Pack Tactics, and Pursuit & Mobility passes remain in place. The new **Finishers & Brutality** pass tightens the grapple chain, limits burst finishers to once per round, prevents redundant finisher/initiative packages through shared families, and gives Apex Instinct a distinct first-round payoff. Latching Bite and Crushing Grip continue to expose their Athletics-vs-Fortitude checks through Creature Forge's interactive ability controls.
+All 25 abilities have completed their individual rules-text and mechanics passes. The final density/overlap review adds soft anti-clustering hints to the library: when Predator Tactics is mixed with the Creature Forge core library, additional Predator picks become progressively less attractive without being forbidden. This keeps the add-on visible without letting a large 25-ability pool drown out core abilities. Passive and reaction entries receive an additional soft diversity penalty after the first pick of the same type.
+
+The RC also clarifies Ambush Rush as up to two subordinate Strides followed by a melee Strike, makes Territorial Challenge explicitly auditory, and rewrites Predator's Exchange without the ambiguous term “threaten.” Interactive Athletics, saves, PF2e actions, and Send Ability to Chat controls remain available.
 
 ## Requirements
 

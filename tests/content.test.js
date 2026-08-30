@@ -287,3 +287,37 @@ test("Finishers & Brutality localization states frequency, MAP, release risk, an
   assert.match(en["PF2E_CF_PREDATOR.Ability.ApexInstinct.Description"], /off-guard/);
   assert.match(de["PF2E_CF_PREDATOR.Ability.ApexInstinct.Description"], /Auf dem Falschen Fuß/);
 });
+
+test("release-candidate density hints keep the 25-ability pool from clustering too aggressively", () => {
+  const sharedDensityTags = ["predator-library-density", "predator-library-balance", "predator-library-mix"];
+  for (const ability of PREDATOR_ABILITIES) {
+    for (const tag of sharedDensityTags) {
+      assert.ok(ability.tags.includes(tag), `${ability.slug}: missing ${tag}`);
+      assert.ok(ability.synergy?.conflicts?.includes(tag), `${ability.slug}: missing conflict ${tag}`);
+    }
+    if (ability.abilityType === "passive") {
+      assert.ok(ability.tags.includes("predator-passive-density"), ability.slug);
+      assert.ok(ability.synergy?.conflicts?.includes("predator-passive-density"), ability.slug);
+    }
+    if (ability.abilityType === "reaction") {
+      assert.ok(ability.tags.includes("predator-reaction-density"), ability.slug);
+      assert.ok(ability.synergy?.conflicts?.includes("predator-reaction-density"), ability.slug);
+    }
+  }
+});
+
+test("release-candidate clarity fixes align Ambush Rush, Territorial Challenge, and Predator's Exchange with their mechanics", () => {
+  const bySlug = new Map(PREDATOR_ABILITIES.map((ability) => [ability.slug, ability]));
+  assert.deepEqual(bySlug.get("ambush-rush").interactions, [{ kind: "action", slug: "stride", mode: "inline" }]);
+  assert.ok(bySlug.get("territorial-challenge").traits.includes("auditory"));
+
+  const en = readJson("lang/en.json");
+  const de = readJson("lang/de.json");
+  assert.match(en["PF2E_CF_PREDATOR.Ability.AmbushRush.Description"], /Strides up to twice/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.AmbushRush.Description"], /bis zu zweimal Laufen/);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.TerritorialChallenge.Description"], /can hear/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.TerritorialChallenge.Description"], /hören kann/);
+  assert.doesNotMatch(en["PF2E_CF_PREDATOR.Ability.PredatorsExchange.Description"], /threaten/i);
+  assert.match(en["PF2E_CF_PREDATOR.Ability.PredatorsExchange.Description"], /within melee reach/);
+  assert.match(de["PF2E_CF_PREDATOR.Ability.PredatorsExchange.Description"], /Nahkampfreichweite/);
+});

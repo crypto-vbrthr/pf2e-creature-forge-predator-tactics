@@ -1,5 +1,5 @@
 export const MODULE_ID = "pf2e-creature-forge-predator-tactics";
-export const MODULE_VERSION = "0.1.0-dev.7";
+export const MODULE_VERSION = "0.1.0-rc.1";
 export const LIBRARY_ID = `${MODULE_ID}.predator-tactics`;
 
 const CORE_EFFECT = Object.freeze({
@@ -8,6 +8,8 @@ const CORE_EFFECT = Object.freeze({
   offGuard: "pf2e-creature-forge.effect.off-guard",
   enfeebled1: "pf2e-creature-forge.effect.enfeebled-1",
 });
+
+const DENSITY_TAGS = Object.freeze(["predator-library-density", "predator-library-balance", "predator-library-mix"]);
 
 const ability = (slug, key, extra = {}) => ({
   id: `${MODULE_ID}.ability.${slug}`,
@@ -22,9 +24,17 @@ const ability = (slug, key, extra = {}) => ({
   powerCost: extra.powerCost,
   baseWeight: extra.baseWeight ?? 60,
   traits: extra.traits ?? [],
-  tags: ["predator", "predator-tactics", ...(extra.tags ?? [])],
+  tags: ["predator", "predator-tactics", ...DENSITY_TAGS, ...(extra.abilityType === "passive" ? ["predator-passive-density"] : []), ...(extra.abilityType === "reaction" ? ["predator-reaction-density"] : []), ...(extra.tags ?? [])],
   selection: extra.selection ?? {},
-  synergy: extra.synergy ?? {},
+  synergy: {
+    ...(extra.synergy ?? {}),
+    conflicts: [...new Set([
+      ...DENSITY_TAGS,
+      ...(extra.abilityType === "passive" ? ["predator-passive-density"] : []),
+      ...(extra.abilityType === "reaction" ? ["predator-reaction-density"] : []),
+      ...(extra.synergy?.conflicts ?? [])
+    ])]
+  },
   applications: extra.applications ?? [],
   mechanics: extra.mechanics ?? null,
   interactions: extra.interactions ?? [],
@@ -41,6 +51,7 @@ export const PREDATOR_ABILITIES = Object.freeze([
     actionCost: 2, powerCost: 3, family: "pounce", baseWeight: 90,
     tags: ["ambush", "movement", "strike", "off-guard"],
     selection: { categories: PREDATOR_CATEGORIES, roles: ["skirmisher", "brute", "sniper", "custom"] },
+    interactions: [{ kind: "action", slug: "stride", mode: "inline" }],
     synergy: { provides: ["close-distance"], prefers: ["ambush", "strike"] }
   }),
   ability("drag-down", "DragDown", {

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0-rc.1 - Final Density, Overlap & Selection Review
+
+- Completed the full 25-ability density, overlap, role/category, and selection-frequency review.
+- Added soft library-density conflict hints so Predator Tactics enriches the default Creature Forge pool instead of overwhelming it when both libraries are enabled.
+- Added additional soft anti-clustering hints for passive and reaction abilities, reducing all-passive and reaction-heavy generated packages without hard-banning thematic combinations.
+- Kept Predator-only source selection fully functional: the density hints are scoring penalties, not hard caps.
+- Clarified Ambush Rush as up to two subordinate Strides followed by a melee Strike and added an inline Stride action link.
+- Made Territorial Challenge explicitly auditory to match its traits.
+- Reworded Predator's Exchange to use explicit melee-reach geometry instead of the ambiguous term "threaten".
+- Promoted the reviewed add-on to release-candidate status.
+
 ## 0.1.0-dev.7 - Finishers & Brutality Review
 
 - Reviewed Latching Bite, Rake the Fallen, Cull the Weak, Crushing Grip, Finish the Hunt, Savage Reversal, and Apex Instinct.
