@@ -59,6 +59,15 @@ test("manifest and package versions agree", () => {
 });
 
 
+test("stable release depends on Creature Forge 1.1.0 stable rather than a dev version", () => {
+  const manifest = readJson("module.json");
+  const dependency = manifest.relationships?.requires?.find((entry) => entry.id === "pf2e-creature-forge");
+  assert.ok(dependency, "Creature Forge dependency missing");
+  assert.equal(dependency.type, "module");
+  assert.equal(dependency.compatibility?.minimum, "1.1.0");
+});
+
+
 test("Ambush & Hunt review keeps the first five abilities mechanically explicit", () => {
   const bySlug = new Map(PREDATOR_ABILITIES.map((ability) => [ability.slug, ability]));
   const ambush = bySlug.get("ambush-rush");

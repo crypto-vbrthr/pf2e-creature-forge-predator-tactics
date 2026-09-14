@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 - Creature Forge Dependency Hotfix
+
+- Changed the required PF2E Creature Forge version from `1.1.0-dev.1` to the stable `1.1.0` release.
+- Prevents Foundry from refusing to activate Predator Tactics when Creature Forge 1.1.0 Stable is installed.
+- No changes to abilities, localization, selection balancing, or runtime behavior.
+
 ## 0.1.0 - Stable Release
 
 - Promoted the Foundry-tested 0.1.0-rc.1 build to the first stable Predator Tactics release.
